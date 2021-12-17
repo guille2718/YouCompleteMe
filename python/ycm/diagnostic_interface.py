@@ -83,6 +83,12 @@ class DiagnosticInterface:
   def _ApplyDiagnosticFilter( self, diags ):
     filetypes = vimsupport.GetBufferFiletypes( self._bufnr )
     diag_filter = self._diag_filter.SubsetForTypes( filetypes )
+
+    # This is just so that JS files don't get parsed incorrectly.
+    if path[-5:] == 'js.cc':
+        return filter(diag_filter.IsAllowed, '')
+    if path[-4:] == 'js.h':
+        return filter(diag_filter.IsAllowed, '')
     return filter( diag_filter.IsAllowed, diags )
 
 
